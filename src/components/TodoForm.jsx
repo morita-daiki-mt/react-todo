@@ -21,9 +21,9 @@ export function TodoForm() {
 
   return (
     <div>
-        <input type="text" ref={taskNameRef}/>
-        <input type="date" ref={taskDeadlineRef}/>
-        <button onClick={AddTodo}>追加</button>
+      <input type="text" ref={taskNameRef}/>
+      <input type="date" ref={taskDeadlineRef}/>
+      <button onClick={AddTodo}>追加</button>
     </div>
   )
 }

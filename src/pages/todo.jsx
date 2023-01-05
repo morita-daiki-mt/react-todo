@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Footer } from '../components/Footter'
 import { TodoForm } from '../components/TodoForm'
 import { TodoList } from '../components/TodoList'
