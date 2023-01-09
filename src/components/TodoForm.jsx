@@ -1,28 +1,24 @@
-import { useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 import styles from '../styles/Home.module.css'
 
 export function TodoForm() {
-  const [input_todo, setTodos] = useState();
+  const [inputTodo, setTodos] = useState([]);
+  const [taskName, setTaskName] = useState("");
+  const [taskDeadLine, setTaskDeadLine] = useState("");
 
-  const taskNameRef = useRef();
-  const taskDeadlineRef = useRef();
+  const AddTodo = useCallback(() => {
+    if(taskName == '' || taskDeadLine == ''){ 
+      alert('項目を埋めてください。');
+      return false; 
+    }
 
-  const AddTodo = () => {
-    const taskName = taskNameRef.current.value;
-    const taskDeadline = taskDeadlineRef.current.value;
-    if(taskName == '' || taskDeadline == ''){ return false; }
-
-    console.log(taskName);
-    console.log(taskDeadline);
-    // setTodos((prevTodos) => {
-      // ここでTodosを作成
-    // })
-  }
+    setTodos((inputTodo) => ([...inputTodo, {task_name: taskName, task_deadline: taskDeadLine}]))
+  }, [taskName, taskDeadLine])
 
   return (
     <div>
-      <input type="text" ref={taskNameRef}/>
-      <input type="date" ref={taskDeadlineRef}/>
+      <input type="text" value={taskName} onChange={(e) => setTaskName(e.target.value)}/>
+      <input type="date" value={taskDeadLine} onChange={(e) => setTaskDeadLine(e.target.value)}/>
       <button onClick={AddTodo}>追加</button>
     </div>
   )
