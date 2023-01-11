@@ -6,7 +6,6 @@ export function TodoForm() {
   const [todos, setTodos] = useState([]);
   const [taskName, setTaskName] = useState('');
   const [taskDeadLine, setTaskDeadLine] = useState('');
-  const [taskComplete, setTaskComplete] = useState(false);
 
   const addTodo = useCallback(() => {
     if(taskName == '' || taskDeadLine == ''){ 
@@ -17,9 +16,12 @@ export function TodoForm() {
     setTodos((inputTodo) => ([...inputTodo, {task_name: taskName, task_deadline: taskDeadLine, complete: false }]))
   }, [taskName, taskDeadLine])
 
-  const completeTodo = useCallback(() => {
-    todos.map((todo, index) => (index == 0 ? { complete: true} : todo))
-  }, [taskComplete])
+  const completeTodo = useCallback((task_key) => {
+    setTodos((todos) => (
+      todos.map(
+        (todo, index) => (index == task_key ? {task_name: todo.task_name, task_deadline: todo.task_deadline, complete: true} : todo))
+    ));
+  }, [])
 
   return (
     <div>
@@ -38,7 +40,7 @@ export function TodoForm() {
               </p>
               {todo.complete ? <p>完了</p> : <p>未完了</p>}
               
-              <input type="checkbox" value={index} onChange={(e) => setTaskComplete(e.target.value)} onClick={completeTodo}/>
+              <button onClick={() => completeTodo(index)}>完了</button>
             </div>
           );
         }
@@ -53,7 +55,6 @@ export function TodoForm() {
               <p>
                 {todo.task_deadline}
               </p>
-              <input type="checkbox" value={index} onClick={completeTodo}/>
             </div>
           );
         }
