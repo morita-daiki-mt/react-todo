@@ -2,9 +2,32 @@ import Head from 'next/head'
 import { Footer } from '../components/Footter'
 import { TodoForm } from '../components/TodoForm'
 import { TodoList } from '../components/TodoList'
+import { useCallback, useState } from 'react'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
+  const [todos, setTodos] = useState([]);
+  const [taskName, setTaskName] = useState('');
+  const [taskDeadLine, setTaskDeadLine] = useState('');
+
+  const addTodo = useCallback(() => {
+    if(taskName == '' || taskDeadLine == ''){ 
+      alert('項目を埋めてください。');
+      return false; 
+    }
+
+    setTodos((todos) => ([...todos, {task_name: taskName, task_deadline: taskDeadLine, complete: false }]))
+    setTaskName('');
+    setTaskDeadLine('');
+  }, [taskName, taskDeadLine])
+
+  const completeTodo = useCallback((task_key) => {
+    setTodos((todos) => (
+      todos.map(
+        (todo, index) => (index == task_key ? {task_name: todo.task_name, task_deadline: todo.task_deadline, complete: true} : todo))
+    ));
+  }, [])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,9 +36,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <TodoForm />
+      <TodoForm todos={todos} taskName={taskName} taskDeadLine={taskDeadLine} addTodo={addTodo} setTaskName={setTaskName} setTaskDeadLine={setTaskDeadLine}/>
         
-      <TodoList title="洗濯" deadline="2022-12-30"/>
+      <TodoList todos={todos} completeTodo={completeTodo}/>
       
       <Footer />
     </div>
