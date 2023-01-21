@@ -1,5 +1,3 @@
-import { useCallback, useState } from 'react'
-import { useTodo } from '../hooks/useTodo';
 import styles from '../styles/Home.module.css'
 
 export function TodoForm(props) {
