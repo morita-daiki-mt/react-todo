@@ -25,25 +25,7 @@ export default function Home() {
       <CookiesProvider>
         <TodoForm todos={todos} taskName={taskName} taskDeadLine={taskDeadLine} addTodo={addTodo} setTaskName={setTaskName} setTaskDeadLine={setTaskDeadLine}/>
 
-        <h1>未完了</h1>
-        <div>
-          {todos?.map((todo, index) => { 
-            if(!todo.complete){
-              return (
-                <TodoList {...todo} index={index} completeTodo={completeTodo} key={index}/>
-              )
-            }
-          })}
-        </div>
-
-        <h1>完了済み</h1>
-        {todos?.map((todo, index) => { 
-          if(todo.complete){
-            return (
-              <TodoList {...todo} index={index} completeTodo={completeTodo} key={index}/>
-            )
-          }
-        })}
+        <TodoList todos={todos} completeTodo={completeTodo}/>
       </CookiesProvider>
     </div>
   )

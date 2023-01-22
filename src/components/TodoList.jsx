@@ -1,23 +1,28 @@
-import styles from '../styles/Home.module.css'
+import { TodoDetail } from '../components/TodoDetail'
 
 export function TodoList(props) {
-  const button = {
-    completeButton: function completeButton() {
-      if(props.complete == false){
-        return (
-          <button onClick={() => props.completeTodo(props.index)}>完了</button>
-        )
-      }
-    }
-  }
-
+  
   return (
     <div>
-      <h3>{props.task_name}</h3>
-      <p>
-        完了期日: {props.task_deadline}
-      </p>
-      <button.completeButton/>
+      <h1>未完了</h1>
+      <div>
+        {props.todos?.map((todo, index) => { 
+          if(!todo.complete){
+            return (
+              <TodoDetail {...todo} index={index} completeTodo={props.completeTodo} key={index}/>
+            )
+          }
+        })}
+      </div>
+
+      <h1>完了済み</h1>
+      {props.todos?.map((todo, index) => { 
+        if(todo.complete){
+          return (
+            <TodoDetail {...todo} index={index} completeTodo={props.completeTodo} key={index}/>
+          )
+        }
+      })}
     </div>
   )
 }
