@@ -1,60 +1,47 @@
 import Head from 'next/head'
-import { Footer } from '../components/Footter'
 import { TodoForm } from '../components/TodoForm'
 import { TodoList } from '../components/TodoList'
-import { useCallback, useState } from 'react'
+import {useState ,useEffect} from 'react'
 import styles from '../styles/Home.module.css'
 import { useCookies } from "react-cookie";
 import { CookiesProvider } from "react-cookie";
 
 export default function Home() {
   const [cookies, setCookie, removeCookie] = useCookies(['todos']);
-  const todo_cookie = cookies.todos;
-  const [todos, setTodos] = useState(todo_cookie)
-  // const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState([]);
   const [taskName, setTaskName] = useState('');
   const [taskDeadLine, setTaskDeadLine] = useState('');
 
-  console.log("cookies.todo");
-  console.log(todo_cookie);
-  console.log(todos);
+  useEffect(() => {
+    setTodos(cookies.todos || [])
+  }, [cookies.todos])
 
   const setTodoCookie = (input_todo)=>{
     console.log('setTodo')
     console.log(input_todo)
-    removeCookie('todos');
     setCookie('todos', input_todo);
   }
 
-  const addTodo = useCallback(() => {
-    console.log("callllllllllllllll");
+  const addTodo = () => {
     if(taskName == '' || taskDeadLine == ''){ 
       alert('項目を埋めてください。');
       return false; 
     }
     const input_todo = [...todos, {task_name: taskName, task_deadline: taskDeadLine, complete: false}];
-    console.log("input_todo");
-    console.log(input_todo)
-    console.log("cookies");
-    console.log(cookies.todos)
 
     setTodos(input_todo);
     setTodoCookie(input_todo);
-    // removeCookie('todos');
-    // setCookie('todos', input_todo);
     setTaskName('');
     setTaskDeadLine('');
-  }, [taskName, taskDeadLine])
+  }
 
-  const completeTodo = useCallback((task_key) => {
+  const completeTodo = (task_key) => {
     const change_todo = todos.map(
       (todo, index) => (index == task_key ? {task_name: todo.task_name, task_deadline: todo.task_deadline, complete: true} : todo)
     )
-    // console.log('change_todo')
-    // console.log(change_todo)
     setTodos(change_todo);
     setTodoCookie(change_todo);
-  }, [])
+  }
 
   return (
     <div className={styles.container}>
@@ -85,7 +72,6 @@ export default function Home() {
             )
           }
         })}
-        <Footer />
       </CookiesProvider>
     </div>
   )

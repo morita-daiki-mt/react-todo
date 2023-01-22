@@ -15,7 +15,7 @@ export function TodoList(props) {
     <div>
       <h3>{props.task_name}</h3>
       <p>
-        {props.task_deadline}
+        完了期日: {props.task_deadline}
       </p>
       <button.completeButton/>
     </div>
